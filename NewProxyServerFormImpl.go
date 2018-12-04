@@ -21,7 +21,7 @@ func (f *TNewProxyServerForm) OnFormCreate(sender vcl.IObject) {
 }
 
 func (f *TNewProxyServerForm) OnSelectCrtActionExecute(sender vcl.IObject) {
-	NewProxyServerForm.SelectCrtDialog.SetFilter("证书文件(*.CRT)|*.CRT|全部文件(*.*)|*.*")
+	NewProxyServerForm.SelectCrtDialog.SetFilter("证书文件(*.CRT;*.CER)|*.CRT;*.CER|全部文件(*.*)|*.*")
 	NewProxyServerForm.SelectCrtDialog.SetDefaultExt("*.CRT")
 	if NewProxyServerForm.SelectCrtDialog.Execute() {
 		strFileName := NewProxyServerForm.SelectCrtDialog.FileName()
@@ -44,7 +44,7 @@ func (f *TNewProxyServerForm) OnSelectKeyActionExecute(sender vcl.IObject) {
 
 func (f *TNewProxyServerForm) OnEnableTlsActionExecute(sender vcl.IObject) {
 	NewProxyServerForm.SelectCrtBtn.SetEnabled(NewProxyServerForm.TlsChk.Checked())
-	NewProxyServerForm.SelectCrtBtn.SetEnabled(NewProxyServerForm.TlsChk.Checked())
+	NewProxyServerForm.SelectKeyBtn.SetEnabled(NewProxyServerForm.TlsChk.Checked())
 }
 
 func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
@@ -57,9 +57,14 @@ func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
 	if err != nil {
 		panic("错误")
 	}
-	u1 := uuid.Must(uuid.NewV4())
-	fmt.Printf("UUIDv4: %s\n", u1)
-	key := u1.String()
+	var key = ""
+	if currentEditServerName == "" {
+		u1 := uuid.Must(uuid.NewV4())
+		fmt.Printf("UUIDv4: %s\n", u1)
+		key = u1.String()
+	} else {
+		key = currentEditServerName
+	}
 	cfg.SetValue(key, "name", configName)
 	cfg.SetValue(key, "LocalType", NewProxyServerForm.LocalTypeCombox.Text())
 	cfg.SetValue(key, "LocalIp", NewProxyServerForm.LocalIpEdit.Text())
@@ -67,9 +72,22 @@ func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
 	cfg.SetValue(key, "SrcType", NewProxyServerForm.SrcTypeComboBox.Text())
 	cfg.SetValue(key, "SrcIp", NewProxyServerForm.SrcIpEdit.Text())
 	cfg.SetValue(key, "SrcPort", NewProxyServerForm.SrcPortEdit.Text())
+	if NewProxyServerForm.TlsChk.Checked() {
+		if len(NewProxyServerForm.CrtEdit.Text()) > 0 {
+			cfg.SetValue(key, "CrtFile", NewProxyServerForm.CrtEdit.Text())
+		} else {
+			vcl.ShowMessage("证书文件必选")
+			return
+		}
+		if len(NewProxyServerForm.KeyEdit.Text()) > 0 {
+			cfg.SetValue(key, "KeyFile", NewProxyServerForm.KeyEdit.Text())
+		} else {
+			vcl.ShowMessage("密钥文件必选")
+			return
+		}
+	}
 	cfg.SetValue(key, "IsTls", strconv.FormatBool(NewProxyServerForm.TlsChk.Checked()))
-	cfg.SetValue(key, "CrtFile", NewProxyServerForm.CrtEdit.Text())
-	cfg.SetValue(key, "KeyFile", NewProxyServerForm.KeyEdit.Text())
+
 	cfg.SetValue(key, "AuthAddr", NewProxyServerForm.AuthAddrEdit.Text())
 	ss := strings.Fields(NewProxyServerForm.AuthMemo.Text())
 	AuthUserPwd := ""
@@ -83,5 +101,5 @@ func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
 }
 
 func (f *TNewProxyServerForm) OnCancelButtonClick(sender vcl.IObject) {
-
+	NewProxyServerForm.Close()
 }
