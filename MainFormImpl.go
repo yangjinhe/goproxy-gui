@@ -58,7 +58,7 @@ func (f *TMainForm) OnPopStartMenuClick(sender vcl.IObject) {
 	configContent += "--parent=" + srcIp + ":" + srcPort + "\r\n"
 	configContent += "--parent-service-type=" + strings.ToLower(srcType) + "\r\n"
 	b, err := strconv.ParseBool(isTls)
-	if (b) {
+	if b {
 		configContent += "--parent-type=tls" + "\r\n"
 		configContent += "--cert=" + crtFile + "\r\n"
 		configContent += "--key=" + keyFile + "\r\n"
@@ -79,7 +79,7 @@ func (f *TMainForm) OnPopStartMenuClick(sender vcl.IObject) {
 	WriteWithIoutil("runconfig.txt", configContent)
 	resetCtx()
 	var cmd = ""
-	if (runtime.GOOS == "windows") {
+	if runtime.GOOS == "windows" {
 		cmd = ".\\proxy.exe"
 	} else {
 		cmd = "./proxy"
@@ -128,8 +128,6 @@ func (f *TMainForm) OnResetFormMenuClick(sender vcl.IObject) {
 	MainForm.Show()
 }
 
-
 func (f *TMainForm) OnTrayIcon1DblClick(sender vcl.IObject) {
 	MainForm.Show()
 }
-

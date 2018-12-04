@@ -4,7 +4,7 @@
 package main
 
 import (
-    "github.com/ying32/govcl/vcl"
+	"github.com/ying32/govcl/vcl"
 	"github.com/ying32/govcl/vcl/rtl/version"
 )
 
@@ -12,8 +12,6 @@ import (
 type TAboutFormFields struct {
 }
 
-
 func (f *TAboutForm) OnFormCreate(sender vcl.IObject) {
 	AboutForm.SetCaption(version.OSVersion.ToString())
 }
-

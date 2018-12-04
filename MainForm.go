@@ -2,40 +2,37 @@
 package main
 
 import (
-    "github.com/ying32/govcl/vcl"
+	"github.com/ying32/govcl/vcl"
 )
 
 type TMainForm struct {
-    *vcl.TForm
-    GroupBox1      *vcl.TGroupBox
-    ServerListView *vcl.TListView
-    GroupBox2      *vcl.TGroupBox
-    OutpuMemo      *vcl.TMemo
-    MainMenu1      *vcl.TMainMenu
-    FileMenu       *vcl.TMenuItem
-    NewItemMenu    *vcl.TMenuItem
-    ModifyItemMenu *vcl.TMenuItem
-    ExitMenu       *vcl.TMenuItem
-    SettingMenu    *vcl.TMenuItem
-    HelpMenu       *vcl.TMenuItem
-    AboutMenu      *vcl.TMenuItem
-    TrayIcon1      *vcl.TTrayIcon
-    PopupMenu1     *vcl.TPopupMenu
-    PopStartMenu   *vcl.TMenuItem
-    PopStopMenu    *vcl.TMenuItem
-    PopExitMenu    *vcl.TMenuItem
-    PopupMenu2     *vcl.TPopupMenu
-    ResetFormMenu  *vcl.TMenuItem
-    ExitPop2Menu   *vcl.TMenuItem
+	*vcl.TForm
+	GroupBox1      *vcl.TGroupBox
+	ServerListView *vcl.TListView
+	GroupBox2      *vcl.TGroupBox
+	OutpuMemo      *vcl.TMemo
+	MainMenu1      *vcl.TMainMenu
+	FileMenu       *vcl.TMenuItem
+	NewItemMenu    *vcl.TMenuItem
+	ModifyItemMenu *vcl.TMenuItem
+	ExitMenu       *vcl.TMenuItem
+	SettingMenu    *vcl.TMenuItem
+	HelpMenu       *vcl.TMenuItem
+	AboutMenu      *vcl.TMenuItem
+	TrayIcon1      *vcl.TTrayIcon
+	PopupMenu1     *vcl.TPopupMenu
+	PopStartMenu   *vcl.TMenuItem
+	PopStopMenu    *vcl.TMenuItem
+	PopExitMenu    *vcl.TMenuItem
+	PopupMenu2     *vcl.TPopupMenu
+	ResetFormMenu  *vcl.TMenuItem
+	ExitPop2Menu   *vcl.TMenuItem
 
-    //::private::
-    TMainFormFields
+	//::private::
+	TMainFormFields
 }
 
 var MainForm *TMainForm
-
-
-
 
 // 以字节形式加载
 // vcl.Application.CreateForm(mainFormBytes, &MainForm)

@@ -2,53 +2,50 @@
 package main
 
 import (
-    "github.com/ying32/govcl/vcl"
+	"github.com/ying32/govcl/vcl"
 )
 
 type TNewProxyServerForm struct {
-    *vcl.TForm
-    GroupBox1          *vcl.TGroupBox
-    Label3             *vcl.TLabel
-    LocalTypeCombox    *vcl.TComboBox
-    Label4             *vcl.TLabel
-    LocalIpEdit        *vcl.TEdit
-    LocalPortEdit      *vcl.TEdit
-    GroupBox2          *vcl.TGroupBox
-    Label1             *vcl.TLabel
-    SrcTypeComboBox    *vcl.TComboBox
-    Label2             *vcl.TLabel
-    SrcIpEdit          *vcl.TEdit
-    SrcPortEdit        *vcl.TEdit
-    GroupBox3          *vcl.TGroupBox
-    TlsChk             *vcl.TCheckBox
-    CrtEdit            *vcl.TEdit
-    KeyEdit            *vcl.TEdit
-    SelectCrtBtn       *vcl.TButton
-    SelectKeyBtn       *vcl.TButton
-    GroupBox4          *vcl.TGroupBox
-    Label5             *vcl.TLabel
-    AuthAddrEdit       *vcl.TEdit
-    Label6             *vcl.TLabel
-    AuthMemo           *vcl.TMemo
-    Label7             *vcl.TLabel
-    ConfigNameEdit     *vcl.TEdit
-    OkButton           *vcl.TButton
-    CancelButton       *vcl.TButton
-    SelectCrtDialog    *vcl.TOpenDialog
-    SelectKeyDialog    *vcl.TOpenDialog
-    ActionList1        *vcl.TActionList
-    SelectCrtAction    *vcl.TAction
-    SelectKeyAction    *vcl.TAction
-    EnableTlsAction    *vcl.TAction
+	*vcl.TForm
+	GroupBox1       *vcl.TGroupBox
+	Label3          *vcl.TLabel
+	LocalTypeCombox *vcl.TComboBox
+	Label4          *vcl.TLabel
+	LocalIpEdit     *vcl.TEdit
+	LocalPortEdit   *vcl.TEdit
+	GroupBox2       *vcl.TGroupBox
+	Label1          *vcl.TLabel
+	SrcTypeComboBox *vcl.TComboBox
+	Label2          *vcl.TLabel
+	SrcIpEdit       *vcl.TEdit
+	SrcPortEdit     *vcl.TEdit
+	GroupBox3       *vcl.TGroupBox
+	TlsChk          *vcl.TCheckBox
+	CrtEdit         *vcl.TEdit
+	KeyEdit         *vcl.TEdit
+	SelectCrtBtn    *vcl.TButton
+	SelectKeyBtn    *vcl.TButton
+	GroupBox4       *vcl.TGroupBox
+	Label5          *vcl.TLabel
+	AuthAddrEdit    *vcl.TEdit
+	Label6          *vcl.TLabel
+	AuthMemo        *vcl.TMemo
+	Label7          *vcl.TLabel
+	ConfigNameEdit  *vcl.TEdit
+	OkButton        *vcl.TButton
+	CancelButton    *vcl.TButton
+	SelectCrtDialog *vcl.TOpenDialog
+	SelectKeyDialog *vcl.TOpenDialog
+	ActionList1     *vcl.TActionList
+	SelectCrtAction *vcl.TAction
+	SelectKeyAction *vcl.TAction
+	EnableTlsAction *vcl.TAction
 
-    //::private::
-    TNewProxyServerFormFields
+	//::private::
+	TNewProxyServerFormFields
 }
 
 var NewProxyServerForm *TNewProxyServerForm
-
-
-
 
 // 以字节形式加载
 // vcl.Application.CreateForm(newProxyServerFormBytes, &NewProxyServerForm)

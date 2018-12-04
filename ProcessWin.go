@@ -50,6 +50,8 @@ func execCommand(ctx context.Context, commandName string, memo *vcl.TMemo, param
 		}
 		if memo != nil {
 			memo.Lines().Append(strings.Replace(string(line), "\n", "", -1))
+		} else {
+			fmt.Print(string(line))
 		}
 	}
 

@@ -2,24 +2,21 @@
 package main
 
 import (
-    "github.com/ying32/govcl/vcl"
+	"github.com/ying32/govcl/vcl"
 )
 
 type TAboutForm struct {
-    *vcl.TForm
-    Label1    *vcl.TLabel
-    Label2    *vcl.TLabel
-    GroupBox1 *vcl.TGroupBox
-    Memo1     *vcl.TMemo
+	*vcl.TForm
+	Label1    *vcl.TLabel
+	Label2    *vcl.TLabel
+	GroupBox1 *vcl.TGroupBox
+	Memo1     *vcl.TMemo
 
-    //::private::
-    TAboutFormFields
+	//::private::
+	TAboutFormFields
 }
 
 var AboutForm *TAboutForm
-
-
-
 
 // 以字节形式加载
 // vcl.Application.CreateForm(aboutFormBytes, &AboutForm)

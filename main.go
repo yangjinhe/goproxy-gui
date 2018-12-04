@@ -5,7 +5,6 @@ import (
 	"context"
 	"github.com/Unknwon/goconfig"
 	"github.com/ying32/govcl/vcl"
-	"github.com/ying32/govcl/vcl/rtl"
 	"io/ioutil"
 	"os"
 	"runtime"
@@ -17,16 +16,12 @@ var ctx context.Context
 func main() {
 	vcl.Application.SetFormScaled(true)
 	vcl.Application.Initialize()
-    vcl.Application.CreateForm(mainFormBytes, &MainForm)
-    vcl.Application.CreateForm(aboutFormBytes, &AboutForm)
-    vcl.Application.CreateForm(newProxyServerFormBytes, &NewProxyServerForm)
+	vcl.Application.CreateForm(mainFormBytes, &MainForm)
+	vcl.Application.CreateForm(aboutFormBytes, &AboutForm)
+	vcl.Application.CreateForm(newProxyServerFormBytes, &NewProxyServerForm)
 	initListView()
 
-	icon := vcl.NewIcon()
-	defer icon.Free()
-	icon.LoadFromResourceName(rtl.MainInstance(), "MAINICON")
-
-	MainForm.TrayIcon1.SetIcon(icon)
+	MainForm.TrayIcon1.SetIcon(vcl.Application.Icon())
 
 	// 捕捉最小化
 	vcl.Application.SetOnMinimize(func(sender vcl.IObject) {
@@ -103,11 +98,11 @@ func cleanEnv() bool {
 	case "darwin":
 		return true
 	case "windows":
-		execCommand(nil, "taskkill.exe", nil,"/f", "/im", "proxy.exe")
-		execCommand(nil, "taskkill.exe", nil,"/f", "/im", "proxy-noconsole.exe")
+		execCommand(nil, "taskkill.exe", nil, "/f", "/im", "proxy.exe")
+		execCommand(nil, "taskkill.exe", nil, "/f", "/im", "proxy-noconsole.exe")
 		return true
 	case "linux":
-		execCommand(nil, "killall", nil,"proxy")
+		execCommand(nil, "killall", nil, "proxy")
 	}
 	return true
 }

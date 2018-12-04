@@ -85,5 +85,3 @@ func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
 func (f *TNewProxyServerForm) OnCancelButtonClick(sender vcl.IObject) {
 
 }
-
-
