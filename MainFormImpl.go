@@ -78,13 +78,16 @@ func (f *TMainForm) OnAboutMenuClick(sender vcl.IObject) {
 }
 
 func (f *TMainForm) OnPopStartMenuClick(sender vcl.IObject) {
+	proxy.Stop(currentServerName)
 	currentServerName = MainForm.ServerListView.Selected().Caption()
 	serverInfo := readConfig(currentServerName)
 	configContent := buildConfig(serverInfo, " ")
+	//fmt.Println(configContent)
 	MainForm.OutpuMemo.Lines().Clear()
 	var loggerCallback proxy.LogCallback
 	loggerCallback = new(MyLogCallback)
 	errStr := proxy.StartWithLog(currentServerName, configContent, loggerCallback)
+	//errStr := proxy.Start(currentServerName, configContent)
 	if errStr != "" {
 		vcl.MessageDlg("启动失败:"+errStr, types.MtError, types.MbOK)
 	}
@@ -152,14 +155,18 @@ type MyLogCallback struct {
 }
 
 func (myLogCallback MyLogCallback) Write(line string) {
-	MainForm.OutpuMemo.Lines().Append(line)
+	go func() {
+		vcl.ThreadSync(func() {
+			MainForm.OutpuMemo.Lines().Append(line)
+		})
+	}()
 }
 
 func (f *TMainForm) OnPopStopMenuClick(sender vcl.IObject) {
-	// 这里肯定有问题，我是乱写的
+	// 这里估计有问题，我是乱写的
+	proxy.Stop(currentServerName)
 	go func() {
 		vcl.ThreadSync(func() {
-			go proxy.Stop(currentServerName)
 			cfg, _ := goconfig.LoadConfigFile(mainConfigName)
 			cfg.SetValue(currentServerName, "Status", "false")
 			_ = goconfig.SaveConfigFile(cfg, mainConfigName)

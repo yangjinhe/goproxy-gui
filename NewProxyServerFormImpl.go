@@ -4,7 +4,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/Unknwon/goconfig"
 	"github.com/satori/go.uuid"
 	"github.com/ying32/govcl/vcl"
@@ -60,7 +59,7 @@ func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
 	var key = ""
 	if currentEditServerName == "" {
 		u1 := uuid.Must(uuid.NewV4())
-		fmt.Printf("UUIDv4: %s\n", u1)
+		//fmt.Printf("UUIDv4: %s\n", u1)
 		key = u1.String()
 	} else {
 		key = currentEditServerName
