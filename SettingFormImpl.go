@@ -6,6 +6,7 @@ package main
 import (
 	"github.com/Unknwon/goconfig"
 	"github.com/ying32/govcl/vcl"
+	"github.com/ying32/govcl/vcl/types"
 	"strconv"
 )
 
@@ -14,24 +15,30 @@ type TSettingFormFields struct {
 }
 
 func (f *TSettingForm) OnConfirmBtnClick(sender vcl.IObject) {
+	var isAutoRunFlag = true
+	var isSysProxyFlag = true
 	if SettingForm.AutoStartChk.Checked() {
-		setAutoRun()
+		isAutoRunFlag = setAutoRun()
 	} else {
-		unSetAutoRun()
+		isAutoRunFlag = unSetAutoRun()
 	}
 	addr := SettingForm.PortEdit.Text()
 	if SettingForm.SysProxyChk.Checked() {
-		setSysProxy(addr)
+		isSysProxyFlag = setSysProxy(addr)
 	} else {
-		unsetSysProxy(addr)
+		isSysProxyFlag = unsetSysProxy(addr)
 	}
-	cfg, err := goconfig.LoadConfigFile("config.ini")
-	if err != nil {
-		panic("错误")
-	}
+	cfg, _ := goconfig.LoadConfigFile(mainConfigName)
 	cfg.SetValue("common", "autoRun", strconv.FormatBool(SettingForm.AutoStartChk.Checked()))
 	cfg.SetValue("common", "sysProxy", strconv.FormatBool(SettingForm.SysProxyChk.Checked()))
 	cfg.SetValue("common", "sysProxyAddr", addr)
+	_ = goconfig.SaveConfigFile(cfg, mainConfigName)
+	if isAutoRunFlag && isSysProxyFlag {
+		vcl.MessageDlg("设置成功", types.MtInformation, types.MbOK)
+		SettingForm.Close()
+	} else {
+		vcl.MessageDlg("设置失败，请尝试以管理员身份运行", types.MtError, types.MbOK)
+	}
 }
 
 func (f *TSettingForm) OnCancelBtnClick(sender vcl.IObject) {

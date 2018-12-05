@@ -53,7 +53,7 @@ func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
 		vcl.ShowMessage("配置文件名称必填")
 		return
 	}
-	cfg, err := goconfig.LoadConfigFile("config.ini")
+	cfg, err := goconfig.LoadConfigFile(mainConfigName)
 	if err != nil {
 		panic("错误")
 	}
@@ -72,6 +72,14 @@ func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
 	cfg.SetValue(key, "SrcType", NewProxyServerForm.SrcTypeComboBox.Text())
 	cfg.SetValue(key, "SrcIp", NewProxyServerForm.SrcIpEdit.Text())
 	cfg.SetValue(key, "SrcPort", NewProxyServerForm.SrcPortEdit.Text())
+	cfg.SetValue(key, "Status", "false")
+	if NewProxyServerForm.LocalTypeCombox.Text() != "SPS" {
+		if NewProxyServerForm.LocalTypeCombox.Text() != NewProxyServerForm.SrcTypeComboBox.Text() {
+			vcl.ShowMessage("本地类型跟上级类型不一致，请重新选择")
+			return
+		}
+	}
+
 	if NewProxyServerForm.TlsChk.Checked() {
 		if len(NewProxyServerForm.CrtEdit.Text()) > 0 {
 			cfg.SetValue(key, "CrtFile", NewProxyServerForm.CrtEdit.Text())
@@ -95,7 +103,7 @@ func (f *TNewProxyServerForm) OnOkButtonClick(sender vcl.IObject) {
 		AuthUserPwd += ss[idx] + ","
 	}
 	cfg.SetValue(key, "AuthUserPwd", AuthUserPwd)
-	err = goconfig.SaveConfigFile(cfg, "config.ini")
+	err = goconfig.SaveConfigFile(cfg, mainConfigName)
 	initListView()
 	NewProxyServerForm.Close()
 }

@@ -34,6 +34,19 @@ type ServerInfo struct {
 }
 
 func (f *TMainForm) OnNewItemMenuClick(sender vcl.IObject) {
+	NewProxyServerForm.ConfigNameEdit.SetText("")
+	NewProxyServerForm.LocalTypeCombox.SetText("")
+	NewProxyServerForm.LocalIpEdit.SetText("")
+	NewProxyServerForm.LocalPortEdit.SetText("")
+	NewProxyServerForm.SrcTypeComboBox.SetText("")
+	NewProxyServerForm.SrcIpEdit.SetText("")
+	NewProxyServerForm.SrcPortEdit.SetText("")
+	NewProxyServerForm.TlsChk.SetChecked(true)
+	NewProxyServerForm.CrtEdit.SetText("")
+	NewProxyServerForm.KeyEdit.SetText("")
+	NewProxyServerForm.AuthAddrEdit.SetText("")
+	NewProxyServerForm.AuthMemo.SetText("")
+	currentEditServerName = ""
 	NewProxyServerForm.ShowModal()
 }
 
@@ -42,6 +55,17 @@ func (f *TMainForm) OnModifyItemMenuClick(sender vcl.IObject) {
 }
 
 func (f *TMainForm) OnSettingMenuClick(sender vcl.IObject) {
+	cfg, err := goconfig.LoadConfigFile(mainConfigName)
+	if err != nil {
+		panic("错误")
+	}
+	autoRun := cfg.MustBool("common", "autoRun", false)
+	sysProxy := cfg.MustBool("common", "sysProxy", false)
+	sysProxyAddr := cfg.MustValue("common", "sysProxyAddr", "")
+
+	SettingForm.AutoStartChk.SetChecked(autoRun)
+	SettingForm.SysProxyChk.SetChecked(sysProxy)
+	SettingForm.PortEdit.SetText(sysProxyAddr)
 	SettingForm.ShowModal()
 }
 
@@ -57,18 +81,21 @@ func (f *TMainForm) OnPopStartMenuClick(sender vcl.IObject) {
 	currentServerName = MainForm.ServerListView.Selected().Caption()
 	serverInfo := readConfig(currentServerName)
 	configContent := buildConfig(serverInfo, " ")
-	resetCtx()
 	MainForm.OutpuMemo.Lines().Clear()
 	var loggerCallback proxy.LogCallback
 	loggerCallback = new(MyLogCallback)
 	errStr := proxy.StartWithLog(currentServerName, configContent, loggerCallback)
 	if errStr != "" {
-		fmt.Println("启动失败：" + errStr)
+		vcl.MessageDlg("启动失败:"+errStr, types.MtError, types.MbOK)
 	}
+	cfg, _ := goconfig.LoadConfigFile(mainConfigName)
+	cfg.SetValue(currentServerName, "Status", strconv.FormatBool(errStr == ""))
+	_ = goconfig.SaveConfigFile(cfg, mainConfigName)
+	initListView()
 }
 
 func readConfig(serverName string) ServerInfo {
-	cfg, err := goconfig.LoadConfigFile("config.ini")
+	cfg, err := goconfig.LoadConfigFile(mainConfigName)
 	if err != nil {
 		panic("错误")
 	}
@@ -87,7 +114,6 @@ func readConfig(serverName string) ServerInfo {
 	serverInfo.authAddr = cfg.MustValue(serverName, "AuthAddr")
 	serverInfo.authUserPwd = cfg.MustValue(serverName, "AuthUserPwd")
 
-	currentLocalIpPort = serverInfo.localIp + ":" + serverInfo.localPort
 	return serverInfo
 }
 
@@ -97,7 +123,9 @@ func buildConfig(serverInfo ServerInfo, sep string) string {
 	//configContent += "--debug\r\n"
 	configContent += "--local=" + serverInfo.localIp + ":" + serverInfo.localPort + sep
 	configContent += "--parent=" + serverInfo.srcIp + ":" + serverInfo.srcPort + sep
-	configContent += "--parent-service-type=" + strings.ToLower(serverInfo.srcType) + sep
+	if serverInfo.localType == "SPS" {
+		configContent += "--parent-service-type=" + strings.ToLower(serverInfo.srcType) + sep
+	}
 	b, _ := strconv.ParseBool(serverInfo.isTls)
 	if b {
 		configContent += "--parent-type=tls" + sep
@@ -128,7 +156,16 @@ func (myLogCallback MyLogCallback) Write(line string) {
 }
 
 func (f *TMainForm) OnPopStopMenuClick(sender vcl.IObject) {
-	resetCtx()
+	// 这里肯定有问题，我是乱写的
+	go func() {
+		vcl.ThreadSync(func() {
+			go proxy.Stop(currentServerName)
+			cfg, _ := goconfig.LoadConfigFile(mainConfigName)
+			cfg.SetValue(currentServerName, "Status", "false")
+			_ = goconfig.SaveConfigFile(cfg, mainConfigName)
+			initListView()
+		})
+	}()
 }
 
 func (f *TMainForm) OnPopExitMenuClick(sender vcl.IObject) {
@@ -137,9 +174,6 @@ func (f *TMainForm) OnPopExitMenuClick(sender vcl.IObject) {
 
 func (f *TMainForm) OnFormCloseQuery(sender vcl.IObject, canClose *bool) {
 	b := vcl.MessageDlg("是否退出?", types.MtConfirmation, types.MbYes, types.MbNo) == types.MrYes
-	if b {
-		resetCtx()
-	}
 	*canClose = b
 }
 
@@ -199,13 +233,16 @@ func (f *TMainForm) OnPopDeleteMenuClick(sender vcl.IObject) {
 	if MainForm.ServerListView.Selected().IsValid() {
 		b := vcl.MessageDlg("确定删除吗?", types.MtConfirmation, types.MbYes, types.MbNo) == types.MrYes
 		if b {
-			cfg, err := goconfig.LoadConfigFile("config.ini")
+			cfg, err := goconfig.LoadConfigFile(mainConfigName)
 			if err != nil {
-				panic("错误")
+				//panic("错误")
+				vcl.MessageDlg("删除失败", types.MtError, types.MbOK)
 			}
 			fmt.Println(MainForm.ServerListView.Selected().Caption())
 			deleteSection := cfg.DeleteSection(MainForm.ServerListView.Selected().Caption())
-			fmt.Println(deleteSection)
+			if deleteSection {
+				_ = goconfig.SaveConfigFile(cfg, mainConfigName)
+			}
 			initListView()
 		}
 	}

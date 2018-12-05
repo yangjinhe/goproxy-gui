@@ -6,7 +6,6 @@ import (
 	"github.com/ProtonMail/go-autostart"
 	"github.com/Unknwon/goconfig"
 	"github.com/getlantern/sysproxy"
-	"github.com/snail007/goproxy/sdk/android-ios"
 	"github.com/ying32/govcl/vcl"
 	"io/ioutil"
 	"log"
@@ -17,17 +16,17 @@ import (
 
 var currentServerName string
 var currentEditServerName string
-var currentLocalIpPort string
+var mainConfigName = "config.ini"
 
 func main() {
 	vcl.Application.SetFormScaled(true)
 	vcl.Application.SetIconResId(3)
 	vcl.Application.Initialize()
 	vcl.Application.SetMainFormOnTaskBar(true)
-	vcl.Application.CreateForm(mainFormBytes, &MainForm)
-	vcl.Application.CreateForm(aboutFormBytes, &AboutForm)
-	vcl.Application.CreateForm(newProxyServerFormBytes, &NewProxyServerForm)
-	vcl.Application.CreateForm(settingFormBytes, &SettingForm)
+    vcl.Application.CreateForm(mainFormBytes, &MainForm)
+    vcl.Application.CreateForm(aboutFormBytes, &AboutForm)
+    vcl.Application.CreateForm(newProxyServerFormBytes, &NewProxyServerForm)
+    vcl.Application.CreateForm(settingFormBytes, &SettingForm)
 	initListView()
 	MainForm.SetCaption("ProxyGo-GUI")
 
@@ -43,17 +42,17 @@ func main() {
 }
 
 func initListView() {
-	b, err := PathExists("config.ini")
+	b, err := PathExists(mainConfigName)
 	if err != nil {
 		panic("错误")
 	}
 	if !b {
-		WriteWithIoutil("config.ini", "[common]")
-		cfg, _ := goconfig.LoadConfigFile("config.ini")
+		WriteWithIoutil(mainConfigName, "[common]")
+		cfg, _ := goconfig.LoadConfigFile(mainConfigName)
 		cfg.SetValue("common", "version", "v1.0")
 	} else {
 		MainForm.ServerListView.Clear()
-		cfg, _ := goconfig.LoadConfigFile("config.ini")
+		cfg, _ := goconfig.LoadConfigFile(mainConfigName)
 		list := cfg.GetSectionList()
 		MainForm.ServerListView.Items().BeginUpdate()
 		for idx := range list {
@@ -70,6 +69,12 @@ func initListView() {
 			lstitem.SubItems().Add(cfg.MustValue(list[idx], "IsTls"))
 			lstitem.SubItems().Add(cfg.MustValue(list[idx], "LocalType"))
 			lstitem.SubItems().Add(cfg.MustValue(list[idx], "LocalPort"))
+			if cfg.MustBool(list[idx], "Status", false) {
+				lstitem.SubItems().Add("运行中")
+			} else {
+				lstitem.SubItems().Add("未启动")
+			}
+
 		}
 		MainForm.ServerListView.Items().EndUpdate()
 	}
@@ -96,15 +101,8 @@ func WriteWithIoutil(name, content string) {
 	}
 }
 
-func resetCtx() {
-	//cleanEnv()
-	if currentServerName != "" {
-		go proxy.Stop(currentServerName)
-	}
-}
-
 func loadSysSetting() {
-	cfg, err := goconfig.LoadConfigFile("config.ini")
+	cfg, err := goconfig.LoadConfigFile(mainConfigName)
 	if err != nil {
 		panic("错误")
 	}
@@ -124,10 +122,11 @@ func loadSysSetting() {
 
 }
 
-func setAutoRun() {
+func setAutoRun() bool {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		log.Fatal(err)
+		return false
 	}
 	fmt.Println(dir)
 
@@ -144,14 +143,17 @@ func setAutoRun() {
 
 		if err := app.Enable(); err != nil {
 			log.Fatal(err)
+			return false
 		}
 	}
+	return true
 }
 
-func unSetAutoRun() {
+func unSetAutoRun() bool {
 	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
 	if err != nil {
 		log.Fatal(err)
+		return false
 	}
 	fmt.Println(dir)
 	app := &autostart.App{
@@ -165,43 +167,47 @@ func unSetAutoRun() {
 
 		if err := app.Disable(); err != nil {
 			log.Fatal(err)
+			return false
 		}
 	}
+	return true
 }
 
-func setSysProxy(addr string) {
+func setSysProxy(addr string) bool {
 	helperFullPath := "sysproxy-cmd"
 	iconFullPath, _ := filepath.Abs("./icon.png")
 	log.Println("Using icon at %v", iconFullPath)
 	err := sysproxy.EnsureHelperToolPresent(helperFullPath, "Input your password and save the world!", iconFullPath)
 	if err != nil {
 		fmt.Printf("Error EnsureHelperToolPresent: %s\n", err)
-		return
+		return false
 	}
-	_, _ = sysproxy.On(addr)
-	if err != nil {
+	_, err1 := sysproxy.On(addr)
+	if err1 != nil {
 		fmt.Printf("Error set proxy: %s\n", err)
-		return
+		return false
 	}
+	return true
 }
 
-func unsetSysProxy(addr string) {
+func unsetSysProxy(addr string) bool {
 	helperFullPath := "sysproxy-cmd"
 	iconFullPath, _ := filepath.Abs("./icon.png")
 	//log.Println("Using icon at %v", iconFullPath)
 	err := sysproxy.EnsureHelperToolPresent(helperFullPath, "Input your password and save the world!", iconFullPath)
 	if err != nil {
 		fmt.Printf("Error EnsureHelperToolPresent: %s\n", err)
-		return
+		return false
 	}
-	off, err := sysproxy.On(addr)
-	if err != nil {
-		fmt.Printf("Error set proxy: %s\n", err)
-		return
-	}
-	err1 := off()
+	off, err1 := sysproxy.On(addr)
 	if err1 != nil {
-		fmt.Printf("Error unset proxy: %s\n", err1)
-		return
+		fmt.Printf("Error set proxy: %s\n", err1)
+		return false
 	}
+	err2 := off()
+	if err2 != nil {
+		fmt.Printf("Error unset proxy: %s\n", err2)
+		return false
+	}
+	return true
 }
