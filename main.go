@@ -13,7 +13,6 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
-	"strings"
 )
 
 var currentServerName string
@@ -134,7 +133,6 @@ func loadSysSetting() {
 	if sysProxy {
 		setSysProxy(sysProxyAddr)
 	}
-
 }
 
 func setAutoRun() bool {
@@ -145,10 +143,16 @@ func setAutoRun() bool {
 	}
 	fmt.Println(dir)
 
+	var exec = ""
+	if runtime.GOOS == "windows" {
+		exec = dir + string(os.PathSeparator) + os.Args[0]
+	} else {
+		exec = os.Args[0]
+	}
 	app := &autostart.App{
 		Name:        "goproxy-gui",
 		DisplayName: "goproxy的图形界面",
-		Exec:        []string{strings.Join([]string{dir, os.Args[0]}, string(os.PathSeparator))},
+		Exec:        []string{exec},
 	}
 
 	if app.IsEnabled() {
@@ -171,10 +175,16 @@ func unSetAutoRun() bool {
 		return false
 	}
 	fmt.Println(dir)
+	var exec = ""
+	if runtime.GOOS == "windows" {
+		exec = dir + string(os.PathSeparator) + os.Args[0]
+	} else {
+		exec = os.Args[0]
+	}
 	app := &autostart.App{
 		Name:        "goproxy-gui",
 		DisplayName: "goproxy的图形界面",
-		Exec:        []string{strings.Join([]string{dir, os.Args[0]}, string(os.PathSeparator))},
+		Exec:        []string{exec},
 	}
 
 	if app.IsEnabled() {
