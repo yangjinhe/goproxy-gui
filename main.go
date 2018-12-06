@@ -35,7 +35,7 @@ func main() {
 	if rtl.LcLLoaded() {
 		if runtime.GOOS != "windows" {
 			icon := vcl.NewIcon()
-			icon.LoadFromFile(rtl.ExtractFilePath(vcl.Application.ExeName()) + "/2.ico")
+			icon.LoadFromFile(rtl.ExtractFilePath(vcl.Application.ExeName()) + "/1.ico")
 			MainForm.TrayIcon1.SetIcon(icon)
 			icon.Free()
 		} else {
@@ -46,8 +46,11 @@ func main() {
 	MainForm.TrayIcon1.SetHint(MainForm.Caption())
 	MainForm.TrayIcon1.SetVisible(true)
 	// 捕捉最小化
+
 	vcl.Application.SetOnMinimize(func(sender vcl.IObject) {
-		MainForm.Hide() // 主窗口最小化掉
+		if runtime.GOOS == "windows" {
+			MainForm.Hide() // 主窗口最小化掉
+		}
 	})
 	loadSysSetting()
 	vcl.Application.Run()
