@@ -157,7 +157,7 @@ type MyLogCallback struct {
 func (myLogCallback MyLogCallback) Write(line string) {
 	go func() {
 		vcl.ThreadSync(func() {
-			MainForm.OutpuMemo.Lines().Append(line)
+			MainForm.OutpuMemo.Lines().Append(strings.Replace(line, "\n", "", -1))
 		})
 	}()
 }
