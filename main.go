@@ -7,10 +7,12 @@ import (
 	"github.com/Unknwon/goconfig"
 	"github.com/getlantern/sysproxy"
 	"github.com/ying32/govcl/vcl"
+	"github.com/ying32/govcl/vcl/rtl"
 	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 )
 
@@ -30,7 +32,17 @@ func main() {
 	initListView()
 	MainForm.SetCaption("ProxyGo-GUI")
 
-	MainForm.TrayIcon1.SetIcon(vcl.Application.Icon())
+	if rtl.LcLLoaded() {
+		if runtime.GOOS != "windows" {
+			icon := vcl.NewIcon()
+			icon.LoadFromFile(rtl.ExtractFilePath(vcl.Application.ExeName()) + "/2.ico")
+			MainForm.TrayIcon1.SetIcon(icon)
+			icon.Free()
+		} else {
+			MainForm.TrayIcon1.SetIcon(vcl.Application.Icon())
+		}
+	}
+
 	MainForm.TrayIcon1.SetHint(MainForm.Caption())
 	MainForm.TrayIcon1.SetVisible(true)
 	// 捕捉最小化
