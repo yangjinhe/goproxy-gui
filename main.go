@@ -143,12 +143,7 @@ func setAutoRun() bool {
 	}
 	fmt.Println(dir)
 
-	var exec = ""
-	if runtime.GOOS == "windows" {
-		exec = dir + string(os.PathSeparator) + os.Args[0]
-	} else {
-		exec = os.Args[0]
-	}
+	var exec = dir + string(os.PathSeparator) + os.Args[0]
 	app := &autostart.App{
 		Name:        "goproxy-gui",
 		DisplayName: "goproxy的图形界面",
@@ -175,12 +170,7 @@ func unSetAutoRun() bool {
 		return false
 	}
 	fmt.Println(dir)
-	var exec = ""
-	if runtime.GOOS == "windows" {
-		exec = dir + string(os.PathSeparator) + os.Args[0]
-	} else {
-		exec = os.Args[0]
-	}
+	var exec = dir + string(os.PathSeparator) + os.Args[0]
 	app := &autostart.App{
 		Name:        "goproxy-gui",
 		DisplayName: "goproxy的图形界面",
