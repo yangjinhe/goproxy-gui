@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 var currentServerName string
@@ -142,8 +143,17 @@ func setAutoRun() bool {
 		return false
 	}
 	fmt.Println(dir)
+	split := strings.Split(os.Args[0], string(os.PathSeparator))
+	exeName := ""
+	if len(split) > 0 {
+		fmt.Println(split[len(split)-1])
+		exeName = split[len(split)-1]
+	} else {
+		exeName = os.Args[0]
+	}
+	fmt.Println(exeName)
 
-	var exec = dir + string(os.PathSeparator) + os.Args[0]
+	var exec = dir + string(os.PathSeparator) + exeName
 	app := &autostart.App{
 		Name:        "goproxy-gui",
 		DisplayName: "goproxy的图形界面",
@@ -170,7 +180,17 @@ func unSetAutoRun() bool {
 		return false
 	}
 	fmt.Println(dir)
-	var exec = dir + string(os.PathSeparator) + os.Args[0]
+	split := strings.Split(os.Args[0], string(os.PathSeparator))
+	exeName := ""
+	if len(split) > 0 {
+		fmt.Println(split[len(split)-1])
+		exeName = split[len(split)-1]
+	} else {
+		exeName = os.Args[0]
+	}
+	fmt.Println(exeName)
+
+	var exec = dir + string(os.PathSeparator) + exeName
 	app := &autostart.App{
 		Name:        "goproxy-gui",
 		DisplayName: "goproxy的图形界面",
