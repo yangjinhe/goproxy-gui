@@ -1,0 +1,83 @@
+object AddMappingForm: TAddMappingForm
+  Left = 497
+  Height = 218
+  Top = 369
+  Width = 368
+  Caption = '新增穿透映射'
+  ClientHeight = 218
+  ClientWidth = 368
+  DesignTimePPI = 120
+  LCLVersion = '2.0.2.0'
+  object Label1: TLabel
+    Left = 80
+    Height = 20
+    Top = 32
+    Width = 30
+    Caption = '类型'
+    ParentColor = False
+  end
+  object TypeComboBox: TComboBox
+    Left = 160
+    Height = 28
+    Top = 24
+    Width = 125
+    ItemHeight = 20
+    ItemIndex = 0
+    Items.Strings = (
+      'tcp'
+      'udp'
+    )
+    OnChange = TypeComboBoxChange
+    Style = csDropDownList
+    TabOrder = 0
+    Text = 'tcp'
+  end
+  object Label2: TLabel
+    Left = 64
+    Height = 20
+    Top = 72
+    Width = 60
+    Caption = '本地端口'
+    ParentColor = False
+  end
+  object LocalPort: TEdit
+    Left = 160
+    Height = 28
+    Top = 64
+    Width = 125
+    TabOrder = 1
+  end
+  object Label3: TLabel
+    Left = 64
+    Height = 20
+    Top = 120
+    Width = 60
+    Caption = '远程端口'
+    ParentColor = False
+  end
+  object RemotePort: TEdit
+    Left = 160
+    Height = 28
+    Top = 112
+    Width = 125
+    TabOrder = 2
+  end
+  object ConfirmBtn: TButton
+    Left = 56
+    Height = 31
+    Top = 168
+    Width = 94
+    Caption = '确定'
+    OnClick = ConfirmBtnClick
+    TabOrder = 3
+  end
+  object CancelBtn: TButton
+    Left = 191
+    Height = 31
+    Top = 168
+    Width = 94
+    Caption = '取消'
+    OnClick = CancelBtnClick
+    TabOrder = 4
+  end
+end

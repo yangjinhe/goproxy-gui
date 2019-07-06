@@ -4,10 +4,8 @@
 package main
 
 import (
-	"github.com/Unknwon/goconfig"
 	"github.com/ying32/govcl/vcl"
 	"github.com/ying32/govcl/vcl/types"
-	"strconv"
 )
 
 //::private::
@@ -28,11 +26,11 @@ func (f *TSettingForm) OnConfirmBtnClick(sender vcl.IObject) {
 	} else {
 		isSysProxyFlag = unsetSysProxy(addr)
 	}
-	cfg, _ := goconfig.LoadConfigFile(mainConfigName)
+	/*cfg, _ := goconfig.LoadConfigFile(mainConfigName)
 	cfg.SetValue("common", "autoRun", strconv.FormatBool(SettingForm.AutoStartChk.Checked()))
 	cfg.SetValue("common", "sysProxy", strconv.FormatBool(SettingForm.SysProxyChk.Checked()))
 	cfg.SetValue("common", "sysProxyAddr", addr)
-	_ = goconfig.SaveConfigFile(cfg, mainConfigName)
+	_ = goconfig.SaveConfigFile(cfg, mainConfigName)*/
 	if isAutoRunFlag && isSysProxyFlag {
 		vcl.MessageDlg("设置成功", types.MtInformation, types.MbOK)
 		SettingForm.Close()

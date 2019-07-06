@@ -1,0 +1,447 @@
+object NewProxyServerForm: TNewProxyServerForm
+  Left = 340
+  Height = 561
+  Top = 196
+  Width = 678
+  Caption = '新增服务'
+  ClientHeight = 561
+  ClientWidth = 678
+  DesignTimePPI = 120
+  LCLVersion = '2.0.2.0'
+  object GroupBox1: TGroupBox
+    Left = 16
+    Height = 160
+    Top = 48
+    Width = 640
+    Caption = '服务器配置'
+    ClientHeight = 135
+    ClientWidth = 636
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 16
+      Height = 20
+      Top = 16
+      Width = 30
+      Caption = '地址'
+      ParentColor = False
+    end
+    object IpInput: TEdit
+      Left = 72
+      Height = 28
+      Top = 8
+      Width = 200
+      TabOrder = 0
+    end
+    object Label2: TLabel
+      Left = 296
+      Height = 20
+      Top = 16
+      Width = 30
+      Caption = '端口'
+      ParentColor = False
+    end
+    object PortInput: TEdit
+      Left = 352
+      Height = 28
+      Top = 8
+      Width = 100
+      TabOrder = 1
+    end
+    object Label3: TLabel
+      Left = 12
+      Height = 20
+      Top = 56
+      Width = 34
+      Caption = ' 协议'
+      ParentColor = False
+    end
+    object ServerProtocolComboBox: TComboBox
+      Left = 72
+      Height = 28
+      Top = 48
+      Width = 125
+      ItemHeight = 20
+      ItemIndex = 0
+      Items.Strings = (
+        'tcp'
+        'tls'
+        'kcp'
+        'ssh'
+        'ws'
+        'wss'
+      )
+      OnChange = ServerProtocolComboBoxChange
+      Style = csDropDownList
+      TabOrder = 2
+      Text = 'tcp'
+    end
+    object CrtLabel: TLabel
+      Left = 16
+      Height = 20
+      Top = 96
+      Width = 30
+      Caption = '证书'
+      ParentColor = False
+      Visible = False
+    end
+    object CrtInput: TEdit
+      Left = 72
+      Height = 28
+      Top = 88
+      Width = 100
+      ReadOnly = True
+      TabOrder = 3
+      Visible = False
+    end
+    object KeyLabel: TLabel
+      Left = 224
+      Height = 20
+      Top = 96
+      Width = 30
+      Caption = '密钥'
+      ParentColor = False
+      Visible = False
+    end
+    object KeyInput: TEdit
+      Left = 276
+      Height = 28
+      Top = 88
+      Width = 100
+      ReadOnly = True
+      TabOrder = 4
+      Visible = False
+    end
+    object SshUserNameLabel: TLabel
+      Left = 0
+      Height = 20
+      Top = 96
+      Width = 45
+      Caption = '用户名'
+      ParentColor = False
+      Visible = False
+    end
+    object SshUserNameInput: TEdit
+      Left = 71
+      Height = 28
+      Top = 88
+      Width = 100
+      TabOrder = 5
+      Visible = False
+    end
+    object SshPwdLabel: TLabel
+      Left = 223
+      Height = 20
+      Top = 96
+      Width = 30
+      Caption = '密码'
+      ParentColor = False
+      Visible = False
+    end
+    object SshPwdInput: TEdit
+      Left = 275
+      Height = 28
+      Top = 88
+      Width = 100
+      TabOrder = 6
+      Visible = False
+    end
+    object SshKeyLabel: TLabel
+      Left = 431
+      Height = 20
+      Top = 96
+      Width = 30
+      Caption = '私钥'
+      ParentColor = False
+      Visible = False
+    end
+    object SshKeyInput: TEdit
+      Left = 479
+      Height = 28
+      Top = 88
+      Width = 100
+      ReadOnly = True
+      TabOrder = 7
+      Visible = False
+    end
+    object KcpPwdLabel: TLabel
+      Left = 16
+      Height = 20
+      Top = 96
+      Width = 30
+      Caption = '密钥'
+      ParentColor = False
+      Visible = False
+    end
+    object KcpPwdInput: TEdit
+      Left = 72
+      Height = 28
+      Top = 88
+      Width = 100
+      TabOrder = 8
+      Visible = False
+    end
+    object SelectCrtBtn: TButton
+      Left = 152
+      Height = 28
+      Top = 88
+      Width = 24
+      Action = SelectCrtAction
+      OnClick = SelectCrtBtnClick
+      TabOrder = 9
+      Visible = False
+    end
+    object SelectKeyBtn: TButton
+      Left = 356
+      Height = 28
+      Top = 88
+      Width = 24
+      Action = SelectKeyAction
+      TabOrder = 10
+      Visible = False
+    end
+    object SelectPrivateKeyBtn: TButton
+      Left = 559
+      Height = 28
+      Top = 88
+      Width = 24
+      Action = SelectPrivateKeyAction
+      TabOrder = 11
+      Visible = False
+    end
+  end
+  object GroupBox2: TGroupBox
+    Left = 16
+    Height = 120
+    Top = 216
+    Width = 640
+    Caption = '本地配置'
+    ClientHeight = 95
+    ClientWidth = 636
+    TabOrder = 1
+    object Label12: TLabel
+      Left = 12
+      Height = 20
+      Top = 8
+      Width = 30
+      Caption = '地址'
+      ParentColor = False
+    end
+    object LocalIp: TEdit
+      Left = 72
+      Height = 28
+      Top = 0
+      Width = 200
+      TabOrder = 0
+      Text = '127.0.0.1'
+    end
+    object Label13: TLabel
+      Left = 320
+      Height = 20
+      Top = 8
+      Width = 30
+      Caption = '端口'
+      ParentColor = False
+    end
+    object LocalPort: TEdit
+      Left = 368
+      Height = 28
+      Top = 0
+      Width = 100
+      TabOrder = 1
+      Text = '1080'
+    end
+    object Label14: TLabel
+      Left = 12
+      Height = 20
+      Top = 48
+      Width = 30
+      Caption = '协议'
+      ParentColor = False
+    end
+    object LocalProtocolComboBox: TComboBox
+      Left = 72
+      Height = 28
+      Top = 40
+      Width = 125
+      ItemHeight = 20
+      ItemIndex = 1
+      Items.Strings = (
+        'tls'
+        'tcp'
+        'kcp'
+        'ws'
+        'wss'
+      )
+      OnChange = LocalProtocolComboBoxChange
+      Style = csDropDownList
+      TabOrder = 2
+      Text = 'tcp'
+    end
+  end
+  object GroupBox3: TGroupBox
+    Left = 16
+    Height = 88
+    Top = 352
+    Width = 640
+    Caption = '其他配置'
+    ClientHeight = 63
+    ClientWidth = 636
+    TabOrder = 2
+    object Label10: TLabel
+      Left = 12
+      Height = 20
+      Top = 17
+      Width = 32
+      Caption = 'DNS'
+      ParentColor = False
+    end
+    object DnsInput: TEdit
+      Left = 64
+      Height = 28
+      Top = 9
+      Width = 184
+      TabOrder = 0
+      Text = '8.8.8.8:53'
+    end
+    object Label11: TLabel
+      Left = 272
+      Height = 20
+      Top = 17
+      Width = 51
+      Caption = 'TTL(秒)'
+      ParentColor = False
+    end
+    object TTLInput: TEdit
+      Left = 344
+      Height = 28
+      Top = 9
+      Width = 100
+      TabOrder = 1
+      Text = '600'
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 16
+    Height = 264
+    Top = 216
+    Width = 640
+    Caption = '穿透映射'
+    ClientHeight = 239
+    ClientWidth = 636
+    TabOrder = 3
+    Visible = False
+    object ListView1: TListView
+      Left = 0
+      Height = 232
+      Top = 0
+      Width = 632
+      Columns = <      
+        item
+          Caption = '类型'
+          Width = 100
+        end      
+        item
+          Caption = '远程端口'
+          Width = 100
+        end      
+        item
+          Caption = '本地端口'
+          Width = 100
+        end>
+      PopupMenu = PopupMenu1
+      RowSelect = True
+      TabOrder = 0
+      ViewStyle = vsReport
+    end
+  end
+  object ConfirmBtn: TButton
+    Left = 168
+    Height = 31
+    Top = 504
+    Width = 94
+    Caption = '确定'
+    OnClick = ConfirmBtnClick
+    TabOrder = 4
+  end
+  object CancelBtn: TButton
+    Left = 368
+    Height = 31
+    Top = 504
+    Width = 94
+    Caption = '取消'
+    OnClick = CancelBtnClick
+    TabOrder = 5
+  end
+  object Label15: TLabel
+    Left = 16
+    Height = 20
+    Top = 16
+    Width = 60
+    Caption = '代理类型'
+    ParentColor = False
+  end
+  object ProxyTypeComboBox: TComboBox
+    Left = 88
+    Height = 28
+    Top = 8
+    Width = 125
+    ItemHeight = 20
+    ItemIndex = 1
+    Items.Strings = (
+      'HTTP'
+      'SPS'
+      'TCP'
+      'UDP'
+      'SOCKS'
+      '穿透'
+    )
+    OnChange = ProxyTypeComboBoxChange
+    Style = csDropDownList
+    TabOrder = 6
+    Text = 'SPS'
+  end
+  object PopupMenu1: TPopupMenu
+    left = 496
+    top = 496
+    object AddMapping: TMenuItem
+      Caption = '新增'
+      OnClick = AddMappingClick
+    end
+    object ModifyMapping: TMenuItem
+      Caption = '修改'
+      OnClick = ModifyMappingClick
+    end
+    object DelMapping: TMenuItem
+      Caption = '删除'
+      OnClick = DelMappingClick
+    end
+  end
+  object ActionList1: TActionList
+    left = 624
+    top = 496
+    object SelectCrtAction: TAction
+      Caption = '...'
+      OnExecute = SelectCrtActionExecute
+    end
+    object SelectKeyAction: TAction
+      Caption = '...'
+      OnExecute = SelectKeyActionExecute
+    end
+    object SelectPrivateKeyAction: TAction
+      Caption = '...'
+      OnExecute = SelectPrivateKeyActionExecute
+    end
+  end
+  object SelectCrtDialog: TOpenDialog
+    left = 528
+    top = 496
+  end
+  object SelectKeyDialog: TOpenDialog
+    left = 560
+    top = 496
+  end
+  object SelectPrivateKeyDialog: TOpenDialog
+    left = 592
+    top = 496
+  end
+end
