@@ -10,5 +10,7 @@ func main() {
     vcl.Application.CreateForm(mainFormBytes, &MainForm)
     vcl.Application.CreateForm(newProxyServerFormBytes, &NewProxyServerForm)
     vcl.Application.CreateForm(addMappingFormBytes, &AddMappingForm)
+    initDb()
+    initListView()
     vcl.Application.Run()
 }

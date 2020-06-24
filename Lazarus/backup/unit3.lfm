@@ -1,7 +1,7 @@
 object AddMappingForm: TAddMappingForm
-  Left = 750
+  Left = 403
   Height = 218
-  Top = 373
+  Top = 504
   Width = 368
   Caption = '新增穿透映射'
   ClientHeight = 218

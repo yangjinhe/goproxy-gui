@@ -18,7 +18,7 @@ func (f *TAddMappingForm) OnTypeComboBoxChange(sender vcl.IObject) {
 
 
 func (f *TAddMappingForm) OnConfirmBtnClick(sender vcl.IObject) {
-
+    //NewProxyServerForm.ListView1.
 }
 
 

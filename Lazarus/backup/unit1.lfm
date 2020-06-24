@@ -1,7 +1,7 @@
 object MainForm: TMainForm
-  Left = 409
+  Left = 430
   Height = 613
-  Top = 222
+  Top = 340
   Width = 1051
   Caption = 'goproxy-gui'
   ClientHeight = 613

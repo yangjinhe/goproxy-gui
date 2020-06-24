@@ -13,7 +13,7 @@ type TMainFormFields struct {
 
 
 func (f *TMainForm) OnSettingsBtnClick(sender vcl.IObject) {
-
+	SettingForm.ShowModal()
 }
 
 
@@ -28,7 +28,7 @@ func (f *TMainForm) OnHelpBtnClick(sender vcl.IObject) {
 
 
 func (f *TMainForm) OnAddServerClick(sender vcl.IObject) {
-
+    NewProxyServerForm.ShowModal()
 }
 
 

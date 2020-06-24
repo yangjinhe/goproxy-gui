@@ -1,7 +1,7 @@
 object NewProxyServerForm: TNewProxyServerForm
-  Left = 575
+  Left = 508
   Height = 561
-  Top = 227
+  Top = 183
   Width = 661
   Caption = '新增服务'
   ClientHeight = 561

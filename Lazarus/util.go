@@ -92,7 +92,6 @@ type ProxyInfo struct {
 	kcpPwd         string
 	dns            string
 	dnsTtl         string
-	state          int64
 }
 
 type TunnelMapping struct {
@@ -120,7 +119,7 @@ func initListView() {
 			p := new(ProxyInfo)
 			err = result.Scan(&p.id, &p.name, &p.proxyType, &p.remoteIp, &p.remotePort,
 				&p.remoteProtocol, &p.localIp, &p.localPort, &p.localProtocol, &p.crtLocation,
-				&p.keyLocation, &p.sshUserName, &p.sshPwd, &p.sshPrivateKey, &p.kcpPwd, &p.dns, &p.dnsTtl, &p.state)
+				&p.keyLocation, &p.sshUserName, &p.sshPwd, &p.sshPrivateKey, &p.kcpPwd, &p.dns, &p.dnsTtl)
 			checkErr(err)
 			listItem := MainForm.ListView1.Items().Add()
 			listItem.SetCaption(string(p.id))

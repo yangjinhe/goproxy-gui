@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Compiler Value="C:\lazarus\fpc\3.0.4\bin\x86_64-win64\fpc.exe" Date="1351329191"/>
+  <Params Value=" -MObjFPC -Scghi -O1 -g -gl -WG -l -vewnhibq -FiD:\home\yangjh\Documents\GOPATH\src\github.com\yangjinhe\goproxy-gui\Lazarus\lib\x86_64-win64 -FuC:\lazarus\lcl\units\x86_64-win64\win32 -FuC:\lazarus\lcl\units\x86_64-win64 -FuC:\lazarus\components\lazutils\lib\x86_64-win64 -FuC:\lazarus\packager\units\x86_64-win64 -FuD:\home\yangjh\Documents\GOPATH\src\github.com\yangjinhe\goproxy-gui\Lazarus\ -FUD:\home\yangjh\Documents\GOPATH\src\github.com\yangjinhe\goproxy-gui\Lazarus\lib\x86_64-win64\ -FED:\home\yangjh\Documents\GOPATH\src\github.com\yangjinhe\goproxy-gui\Lazarus\ -oD:\home\yangjh\Documents\GOPATH\src\github.com\yangjinhe\goproxy-gui\Lazarus\project1.exe -dLCL -dLCLwin32 project1.lpr"/>
+</CONFIG>
